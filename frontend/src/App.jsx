@@ -5,6 +5,7 @@ import TripFormModal from './components/TripFormModal';
 import AuthModal from './components/AuthModal';
 import ExpenseModal from './components/ExpenseModal';
 import ItineraryModal from './components/ItineraryModal';
+import Hero from './components/Hero';
 import { Compass, Plus, RefreshCw, Globe, DollarSign, Users, AlertCircle, CheckCircle2, LogIn, LogOut, User as UserIcon, ShieldCheck } from 'lucide-react';
 
 export default function App() {
@@ -217,8 +218,12 @@ export default function App() {
         </div>
       )}
 
-      {/* Navigation Header */}
-      <header className="glass-panel sticky top-0 z-40 border-b border-slate-800">
+      {!user ? (
+        <Hero onLoginClick={() => setIsAuthModalOpen(true)} />
+      ) : (
+        <>
+          {/* Navigation Header */}
+          <header className="glass-panel sticky top-0 z-40 border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-indigo-600/20 p-2.5 rounded-2xl border border-indigo-500/30 text-indigo-400">
@@ -287,30 +292,8 @@ export default function App() {
 
       {/* Main Dashboard Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {!user ? (
-          /* Unauthenticated Landing State */
-          <div className="max-w-3xl mx-auto text-center py-12 px-4">
-            <div className="w-20 h-20 bg-indigo-600/20 text-indigo-400 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-indigo-500/30 shadow-2xl">
-              <ShieldCheck className="w-10 h-10" />
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
-              Secure JWT Authentication Enabled
-            </h2>
-            <p className="text-slate-400 text-base max-w-xl mx-auto mb-8 leading-relaxed">
-              Log in or register your account to start managing your personal trip itineraries, budget, and travel preferences with MongoDB user persistence.
-            </p>
-            <div className="flex items-center justify-center gap-4">
-              <button
-                onClick={() => setIsAuthModalOpen(true)}
-                className="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-base px-8 py-3.5 rounded-2xl shadow-xl shadow-indigo-600/30 transition-all flex items-center gap-2"
-              >
-                <LogIn className="w-5 h-5" /> Get Started / Log In
-              </button>
-            </div>
-          </div>
-        ) : (
-          /* Authenticated Dashboard */
-          <>
+        {/* Authenticated Dashboard */}
+        <>
             {/* Stats Row */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
               <div className="glass-card rounded-2xl p-5 flex items-center gap-4">
@@ -413,8 +396,9 @@ export default function App() {
               </div>
             )}
           </>
-        )}
       </main>
+      </>
+      )}
 
       {/* Auth Modal */}
       <AuthModal
