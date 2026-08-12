@@ -29,7 +29,7 @@ Trip details:
 - Start Date: ${formatDate(startDate)}
 - End Date: ${formatDate(endDate)}
 - Duration: ${numDays} day(s)
-- Total Budget: $${trip.budget} USD for ${trip.travelers} traveler(s)
+- Total Budget: ₹${trip.budget} INR for ${trip.travelers} traveler(s)
 - Traveler Interests: ${interests}
 
 Return a JSON object with exactly this structure (no extra keys, no markdown):
@@ -44,7 +44,7 @@ Return a JSON object with exactly this structure (no extra keys, no markdown):
           "time": "09:00 AM",
           "activity": "Activity name",
           "description": "Brief description of what to do and see",
-          "estimatedCost": 25
+          "estimatedCost": 2000
         }
       ],
       "meals": {
@@ -53,7 +53,7 @@ Return a JSON object with exactly this structure (no extra keys, no markdown):
         "dinner": "Name of place or meal suggestion"
       },
       "accommodation": "Hotel or lodging recommendation",
-      "estimatedDayBudget": 200
+      "estimatedDayBudget": 15000
     }
   ]
 }
@@ -61,9 +61,9 @@ Return a JSON object with exactly this structure (no extra keys, no markdown):
 Rules:
 - Generate exactly ${numDays} day object(s), one per day of the trip.
 - Each day should have 3–5 activities with realistic times and costs.
-- estimatedCost values are in USD per person.
+- estimatedCost values are in INR per person.
 - estimatedDayBudget should be the sum of activity costs plus meals/accommodation per person.
-- Keep total costs roughly within the $${trip.budget} total budget across all days.
+- Keep total costs roughly within the ₹${trip.budget} total budget across all days.
 - Tailor activities to the stated interests: ${interests}.
 - Return only valid JSON — no markdown, no code blocks, no explanations.`;
 };

@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { tripApi, authApi } from './api/api';
-import TripCard from './components/TripCard';
-import TripFormModal from './components/TripFormModal';
+import Navigation from './components/Navigation';
+import Hero from './components/Hero';
 import AuthModal from './components/AuthModal';
+import TripFormModal from './components/TripFormModal';
 import ExpenseModal from './components/ExpenseModal';
 import ItineraryModal from './components/ItineraryModal';
-import Hero from './components/Hero';
-import { Compass, Plus, RefreshCw, Globe, DollarSign, Users, AlertCircle, CheckCircle2, LogIn, LogOut, User as UserIcon, ShieldCheck } from 'lucide-react';
+
+// Views
+import DashboardView from './components/views/DashboardView';
+import MyTripsView from './components/views/MyTripsView';
+import DiscoverView from './components/views/DiscoverView';
+import ExpensesView from './components/views/ExpensesView';
+import TripDetailView from './components/views/TripDetailView';
+
+import { AlertCircle, CheckCircle2 } from 'lucide-react';
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -18,8 +26,12 @@ export default function App() {
   const [error, setError] = useState('');
   const [toast, setToast] = useState(null);
 
+  // View Routing State
+  const [currentView, setCurrentView] = useState('dashboard'); // dashboard, my-trips, discover, expenses, trip-detail
+  const [selectedTrip, setSelectedTrip] = useState(null);
+
   // Modal States
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTripFormModalOpen, setIsTripFormModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [editingTrip, setEditingTrip] = useState(null);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
@@ -27,7 +39,6 @@ export default function App() {
   const [isItineraryModalOpen, setIsItineraryModalOpen] = useState(false);
   const [selectedTripForItinerary, setSelectedTripForItinerary] = useState(null);
 
-  // Check existing token and fetch user on initial mount
   useEffect(() => {
     const verifyUser = async () => {
       const storedToken = localStorage.getItem('token');
@@ -51,7 +62,6 @@ export default function App() {
     verifyUser();
   }, []);
 
-  // Fetch Trips whenever user is authenticated
   const fetchTrips = async () => {
     if (!token && !user) return;
     try {
@@ -89,7 +99,6 @@ export default function App() {
     setTimeout(() => setToast(null), 4000);
   };
 
-  // Auth Handling (Login / Register)
   const handleAuthSuccess = async (type, payload) => {
     let res;
     if (type === 'login') {
@@ -107,36 +116,34 @@ export default function App() {
     }
   };
 
-  // Logout
   const handleLogout = () => {
     localStorage.removeItem('token');
     setToken('');
     setUser(null);
     setTrips([]);
+    setCurrentView('dashboard');
     showToast('Logged out successfully', 'success');
   };
 
-  // Handle Create or Update Submit
   const handleSaveTrip = async (tripData) => {
     try {
       if (editingTrip) {
-        // UPDATE
         const res = await tripApi.updateTrip(editingTrip._id, tripData);
         if (res.success) {
-          setTrips((prev) =>
-            prev.map((t) => (t._id === editingTrip._id ? res.data : t))
-          );
+          setTrips((prev) => prev.map((t) => (t._id === editingTrip._id ? res.data : t)));
+          if(selectedTrip?._id === editingTrip._id) {
+             setSelectedTrip(res.data);
+          }
           showToast('Trip updated successfully!');
         }
       } else {
-        // CREATE
         const res = await tripApi.createTrip(tripData);
         if (res.success) {
           setTrips((prev) => [res.data, ...prev]);
           showToast('New trip created successfully!');
         }
       }
-      setIsModalOpen(false);
+      setIsTripFormModalOpen(false);
       setEditingTrip(null);
     } catch (err) {
       console.error('Error saving trip:', err);
@@ -144,14 +151,16 @@ export default function App() {
     }
   };
 
-  // Handle Delete
   const handleDeleteTrip = async (id) => {
     if (!window.confirm('Are you sure you want to delete this trip?')) return;
-
     try {
       const res = await tripApi.deleteTrip(id);
       if (res.success) {
         setTrips((prev) => prev.filter((t) => t._id !== id));
+        if(selectedTrip?._id === id) {
+           setCurrentView('dashboard');
+           setSelectedTrip(null);
+        }
         showToast('Trip deleted successfully');
       }
     } catch (err) {
@@ -167,12 +176,12 @@ export default function App() {
       return;
     }
     setEditingTrip(null);
-    setIsModalOpen(true);
+    setIsTripFormModalOpen(true);
   };
 
   const handleOpenEditModal = (trip) => {
     setEditingTrip(trip);
-    setIsModalOpen(true);
+    setIsTripFormModalOpen(true);
   };
 
   const handleManageExpenses = (trip) => {
@@ -185,233 +194,124 @@ export default function App() {
     setIsItineraryModalOpen(true);
   };
 
-  // Stats calculation
+  const handleNavigateToTrip = (trip) => {
+    setSelectedTrip(trip);
+    setCurrentView('trip-detail');
+  };
+
   const totalBudget = trips.reduce((sum, t) => sum + (t.budget || 0), 0);
   const totalTravelers = trips.reduce((sum, t) => sum + (t.travelers || 0), 0);
 
   if (authChecking) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-100">
-        <div className="w-12 h-12 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin mb-4" />
-        <p className="text-slate-400 text-sm animate-pulse">Initializing TripSync AI...</p>
+      <div className="min-h-screen bg-paper flex flex-col items-center justify-center text-charcoal">
+        <div className="w-12 h-12 border-4 border-brown/30 border-t-brown rounded-full animate-spin mb-4" />
+        <p className="text-muted text-sm font-medium">Initializing TripSync...</p>
       </div>
     );
   }
 
+  const renderView = () => {
+    switch(currentView) {
+      case 'dashboard':
+        return (
+          <DashboardView 
+            user={user} trips={trips} totalBudget={totalBudget} totalTravelers={totalTravelers} 
+            loading={loading} error={error} fetchTrips={fetchTrips} handleOpenCreateModal={handleOpenCreateModal}
+            handleOpenEditModal={handleOpenEditModal} handleDeleteTrip={handleDeleteTrip}
+            handleManageExpenses={handleManageExpenses} handleViewItinerary={handleViewItinerary}
+            onNavigateToTrip={handleNavigateToTrip}
+          />
+        );
+      case 'my-trips':
+        return (
+          <MyTripsView 
+            trips={trips} handleOpenCreateModal={handleOpenCreateModal}
+            handleOpenEditModal={handleOpenEditModal} handleDeleteTrip={handleDeleteTrip}
+            handleManageExpenses={handleManageExpenses} handleViewItinerary={handleViewItinerary}
+            onNavigateToTrip={handleNavigateToTrip}
+          />
+        );
+      case 'discover':
+        return <DiscoverView handleOpenCreateModal={handleOpenCreateModal} />;
+      case 'expenses':
+        return <ExpensesView handleManageExpenses={handleManageExpenses} trips={trips} />;
+      case 'trip-detail':
+        return (
+          <TripDetailView 
+            trip={selectedTrip} 
+            onBack={() => setCurrentView('dashboard')}
+            handleEditTrip={handleOpenEditModal}
+            handleDeleteTrip={handleDeleteTrip}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col font-sans text-wandor-text">
+    <div className="min-h-screen flex flex-col font-sans text-charcoal">
       {/* Toast Notification */}
       {toast && (
         <div
-          className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl border transition-all animate-in slide-in-from-bottom-5 ${
+          className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-4 rounded-2xl shadow-float border transition-all animate-in slide-in-from-bottom-5 ${
             toast.type === 'error'
-              ? 'bg-rose-950/90 text-rose-300 border-rose-800'
-              : 'bg-emerald-950/90 text-emerald-300 border-emerald-800'
+              ? 'bg-terracotta/95 text-paper border-brown'
+              : 'bg-olive/95 text-paper border-olive/50'
           }`}
         >
           {toast.type === 'error' ? (
-            <AlertCircle className="w-5 h-5 text-rose-400" />
+            <AlertCircle className="w-5 h-5 text-paper" />
           ) : (
-            <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+            <CheckCircle2 className="w-5 h-5 text-paper" />
           )}
-          <span className="text-sm font-medium">{toast.message}</span>
+          <span className="text-sm font-semibold tracking-wide">{toast.message}</span>
         </div>
       )}
 
       {!user ? (
-        <Hero onLoginClick={() => setIsAuthModalOpen(true)} />
+        <>
+          <Navigation 
+            user={user} 
+            onLogin={() => setIsAuthModalOpen(true)} 
+          />
+          <Hero onLoginClick={() => setIsAuthModalOpen(true)} />
+        </>
       ) : (
         <>
-          {/* Navigation Header */}
-          <header className="pt-6 px-4 sm:px-6 lg:px-8 sticky top-0 z-40">
-            <div className="max-w-[1360px] mx-auto h-16 flex items-center justify-between px-6 bg-white/70 backdrop-blur-xl border border-black/5 rounded-full shadow-sm">
-              <div className="flex items-center gap-3">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h1 className="text-[28px] font-display font-medium text-black tracking-tight leading-none">
-                      TripSync
-                    </h1>
-                  </div>
-                </div>
-              </div>
-
-              {/* Center Links (Hidden on Mobile) */}
-              <div className="absolute left-1/2 -translate-x-1/2 hidden md:flex gap-8">
-                <button className="bg-transparent border-none cursor-pointer text-[14px] font-medium uppercase text-wandor-muted tracking-[0.04em] transition-opacity hover:text-black">
-                  Discover
-                </button>
-                <button className="bg-transparent border-none cursor-pointer text-[14px] font-medium uppercase text-wandor-muted tracking-[0.04em] transition-opacity hover:text-black">
-                  My Trips
-                </button>
-                <button className="bg-transparent border-none cursor-pointer text-[14px] font-medium uppercase text-wandor-muted tracking-[0.04em] transition-opacity hover:text-black">
-                  Expenses
-                </button>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <div className="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-full border border-black/5 bg-black/5">
-                  <div className="w-6 h-6 rounded-full bg-wandor-prompt text-white flex items-center justify-center font-bold text-xs">
-                    {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                  </div>
-                  <p className="text-xs font-semibold text-black leading-tight pr-2">{user.name}</p>
-                </div>
-
-                <button
-                  onClick={fetchTrips}
-                  className="p-2 text-wandor-muted hover:text-black transition-colors"
-                  title="Refresh Trips from API"
-                >
-                  <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-                </button>
-
-                <button
-                  onClick={handleLogout}
-                  className="p-2 text-wandor-muted hover:text-rose-500 transition-colors"
-                  title="Log Out"
-                >
-                  <LogOut className="w-4 h-4" />
-                </button>
-
-                <button
-                  onClick={handleOpenCreateModal}
-                  className="bg-black hover:bg-[#333] text-white font-medium text-[13px] uppercase tracking-[0.04em] px-4 py-2.5 rounded-full transition-all active:scale-95 flex items-center gap-1.5"
-                >
-                  <Plus className="w-4 h-4" /> Create Trip
-                </button>
-              </div>
-            </div>
-          </header>
-
-      {/* Main Dashboard Content */}
-      <main className="flex-1 max-w-[1360px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Authenticated Dashboard */}
-        <>
-            <div className="mb-10 text-center md:text-left">
-              <h2 className="text-[32px] md:text-[40px] font-medium tracking-tight mb-2">Good morning, {user?.name?.split(' ')[0]}</h2>
-              <p className="text-xl text-wandor-muted">Ready to plan your next adventure?</p>
-            </div>
-
-            {/* Stats Row */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white rounded-[32px] p-6 flex flex-col justify-center border border-black/5 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.02)]">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2.5 bg-black/5 rounded-full text-black">
-                    <Globe className="w-5 h-5" />
-                  </div>
-                  <p className="text-sm text-wandor-muted font-medium uppercase tracking-widest">Total Trips</p>
-                </div>
-                <h3 className="text-[40px] font-semibold text-black leading-none">{trips.length}</h3>
-              </div>
-
-              <div className="bg-white rounded-[32px] p-6 flex flex-col justify-center border border-black/5 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.02)]">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2.5 bg-black/5 rounded-full text-black">
-                    <DollarSign className="w-5 h-5" />
-                  </div>
-                  <p className="text-sm text-wandor-muted font-medium uppercase tracking-widest">Total Budget</p>
-                </div>
-                <h3 className="text-[40px] font-semibold text-black leading-none">${totalBudget.toLocaleString()}</h3>
-              </div>
-
-              <div className="bg-white rounded-[32px] p-6 flex flex-col justify-center border border-black/5 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.02)]">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2.5 bg-black/5 rounded-full text-black">
-                    <Users className="w-5 h-5" />
-                  </div>
-                  <p className="text-sm text-wandor-muted font-medium uppercase tracking-widest">Total Travelers</p>
-                </div>
-                <h3 className="text-[40px] font-semibold text-black leading-none">{totalTravelers}</h3>
-              </div>
-            </div>
-
-            {/* Section Heading */}
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-semibold text-black tracking-tight">Your Upcoming Adventures</h2>
-            </div>
-
-            {/* Error Banner */}
-            {error && (
-              <div className="mb-8 p-4 bg-red-50 text-red-600 rounded-2xl flex items-center gap-3">
-                <AlertCircle className="w-5 h-5 shrink-0" />
-                <div className="flex-1 text-sm">{error}</div>
-                <button
-                  onClick={fetchTrips}
-                  className="text-xs font-semibold hover:underline"
-                >
-                  Retry
-                </button>
-              </div>
-            )}
-
-            {/* Loading Skeleton / State */}
-            {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[1, 2, 3].map((n) => (
-                  <div key={n} className="bg-white rounded-[32px] p-6 h-[320px] animate-pulse border border-black/5">
-                    <div className="space-y-4">
-                      <div className="h-6 bg-gray-100 rounded-full w-1/3"></div>
-                      <div className="h-8 bg-gray-100 rounded-full w-2/3"></div>
-                      <div className="h-4 bg-gray-100 rounded-full w-1/2"></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : trips.length === 0 ? (
-              /* Empty State */
-              <div className="bg-white rounded-[40px] p-16 text-center max-w-2xl mx-auto my-12 border border-black/5 shadow-sm">
-                <div className="w-20 h-20 bg-black/5 text-black rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Globe className="w-10 h-10" />
-                </div>
-                <h3 className="text-3xl font-semibold text-black mb-4">No trips created yet</h3>
-                <p className="text-lg text-wandor-muted mb-8 max-w-md mx-auto">
-                  Get started by creating your first adventure. Tell our AI where you want to go.
-                </p>
-                <button
-                  onClick={handleOpenCreateModal}
-                  className="bg-black hover:bg-[#333] text-white font-medium text-[15px] uppercase tracking-[0.04em] px-8 py-4 rounded-full transition-all active:scale-95 shadow-lg shadow-black/10"
-                >
-                  Plan My Trip
-                </button>
-              </div>
-            ) : (
-              /* Trip Cards Grid */
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {trips.map((trip) => (
-                  <TripCard
-                    key={trip._id}
-                    trip={trip}
-                    onEdit={handleOpenEditModal}
-                    onDelete={handleDeleteTrip}
-                    onManageExpenses={handleManageExpenses}
-                    onViewItinerary={handleViewItinerary}
-                  />
-                ))}
-              </div>
-            )}
-          </>
-      </main>
-      </>
+          <Navigation 
+            user={user} 
+            loading={loading}
+            currentView={currentView}
+            onNavigate={setCurrentView}
+            onLogout={handleLogout}
+            onRefresh={fetchTrips}
+            onCreateTrip={handleOpenCreateModal}
+          />
+          <main className="flex-1 max-w-[1360px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+            {renderView()}
+          </main>
+        </>
       )}
 
-      {/* Auth Modal */}
+      {/* Modals */}
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         onAuthSuccess={handleAuthSuccess}
       />
 
-      {/* Form Modal */}
       <TripFormModal
-        isOpen={isModalOpen}
+        isOpen={isTripFormModalOpen}
         onClose={() => {
-          setIsModalOpen(false);
+          setIsTripFormModalOpen(false);
           setEditingTrip(null);
         }}
         onSubmit={handleSaveTrip}
         initialData={editingTrip}
       />
 
-      {/* Expense Modal */}
       <ExpenseModal
         isOpen={isExpenseModalOpen}
         onClose={() => {
@@ -421,7 +321,6 @@ export default function App() {
         trip={selectedTripForExpenses}
       />
 
-      {/* Itinerary Modal */}
       <ItineraryModal
         isOpen={isItineraryModalOpen}
         onClose={() => {

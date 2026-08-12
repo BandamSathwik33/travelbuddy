@@ -42,13 +42,22 @@ app.use(cors({
 app.use(express.json());
 
 // Connect to Database
-connectDB();
+connectDB().then(() => {
+  // Mount Routes
+  app.use('/api/auth', authRoutes);
+  app.use('/api/trips', tripRoutes);
+  app.use('/api/expenses', expenseRoutes);
+  app.use('/api/itinerary', itineraryRoutes);
 
-// Mount Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/trips', tripRoutes);
-app.use('/api/expenses', expenseRoutes);
-app.use('/api/itinerary', itineraryRoutes);
+  // Start Server
+  app.listen(PORT, () => {
+    console.log(`[TripSync Backend] Server running on port ${PORT}`);
+    console.log(`[Health Check] GET http://localhost:${PORT}/api/health`);
+  });
+}).catch((err) => {
+  console.error('[TripSync Backend] Server failed to start because database connection could not be established.');
+  process.exit(1);
+});
 
 // Helper to translate Mongoose readiness state
 const getDbState = () => {
@@ -73,10 +82,4 @@ app.get('/api/health', (req, res) => {
       isConnected: mongoose.connection.readyState === 1
     }
   });
-});
-
-// Start Server
-app.listen(PORT, () => {
-  console.log(`[TripSync Backend] Server running on port ${PORT}`);
-  console.log(`[Health Check] GET http://localhost:${PORT}/api/health`);
 });

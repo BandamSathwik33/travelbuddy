@@ -7,31 +7,31 @@
   body {
     font-family: 'Geist', sans-serif;
     overflow-x: hidden;
-    background-color: #fafafa;
-    color: #1a1a1a;
+    background-color: theme('colors.paper');
+    color: theme('colors.charcoal');
   }
 }
 
 @layer utilities {
   .glass-panel {
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(247, 241, 230, 0.85); /* cream with opacity */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid theme('colors.subtle');
   }
   .glass-card {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(251, 248, 241, 0.9); /* paper with opacity */
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(0, 0, 0, 0.04);
-    box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.05);
+    border: 1px solid theme('colors.subtle');
+    box-shadow: theme('boxShadow.soft');
   }
   .glass-modal {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(251, 248, 241, 0.95);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    border: 1px solid theme('colors.subtle');
+    box-shadow: theme('boxShadow.float');
   }
 }
 
