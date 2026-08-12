@@ -48,8 +48,8 @@ export default function ItineraryMap({ days }) {
 
   if (markers.length === 0) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-slate-900 rounded-2xl border border-slate-800">
-        <p className="text-slate-400 text-sm">No map locations available for this itinerary.</p>
+      <div className="w-full h-full flex items-center justify-center bg-black/[0.02] rounded-3xl border border-black/5">
+        <p className="text-wandor-muted text-[14px] font-medium">No map locations available for this itinerary.</p>
       </div>
     );
   }
@@ -58,7 +58,7 @@ export default function ItineraryMap({ days }) {
   const defaultCenter = [markers[0].lat, markers[0].lng];
 
   return (
-    <div className="w-full h-full rounded-2xl overflow-hidden border border-slate-800 relative shadow-inner z-0">
+    <div className="w-full h-full rounded-3xl overflow-hidden border border-black/5 relative shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)] z-0">
       <MapContainer
         center={defaultCenter}
         zoom={13}
@@ -72,11 +72,11 @@ export default function ItineraryMap({ days }) {
           <Marker key={idx} position={[m.lat, m.lng]}>
             <Popup className="custom-popup">
               <div className="font-sans">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-500 mb-1 block">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-wandor-prompt mb-1 block">
                   Day {m.day} {m.time ? `• ${m.time}` : ''}
                 </span>
-                <p className="font-bold text-slate-900 text-sm mb-1">{m.title}</p>
-                {m.description && <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">{m.description}</p>}
+                <p className="font-bold text-black text-[14px] mb-1 leading-tight">{m.title}</p>
+                {m.description && <p className="text-[12px] text-wandor-muted line-clamp-3 leading-relaxed mt-1">{m.description}</p>}
               </div>
             </Popup>
           </Marker>

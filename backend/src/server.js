@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 5000;
 // Configure CORS
 const allowedOrigins = [
   process.env.CLIENT_URL,
+  'https://travelbuddy-team-ecde.vercel.app',
   'http://localhost:3000',
   'http://127.0.0.1:3000',
   'http://localhost:3001',
@@ -26,13 +27,15 @@ const allowedOrigins = [
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    } else {
+      return callback(null, false);
     }
-    return callback(null, true);
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
 
 // Body Parsing Middleware

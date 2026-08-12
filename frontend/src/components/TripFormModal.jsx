@@ -86,31 +86,33 @@ export default function TripFormModal({ isOpen, onClose, onSubmit, initialData }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="glass-panel w-full max-w-lg rounded-2xl p-6 shadow-2xl border border-slate-700/60 relative max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="bg-white w-full max-w-lg rounded-[40px] p-8 sm:p-10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-black/5 relative max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
+          className="absolute top-6 right-6 text-wandor-muted hover:text-black p-2 rounded-full hover:bg-black/5 transition-colors z-10"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <h2 className="text-2xl font-bold text-white mb-1">
-          {initialData ? 'Edit Trip Details' : 'Create New Trip'}
-        </h2>
-        <p className="text-slate-400 text-sm mb-6">
-          {initialData ? 'Update your trip parameters below' : 'Plan your next adventure with friends'}
-        </p>
+        <div className="mb-8">
+          <h2 className="text-[28px] font-semibold text-black tracking-tight mb-2 leading-tight">
+            {initialData ? 'Edit Trip Details' : 'Create New Trip'}
+          </h2>
+          <p className="text-wandor-muted text-[15px]">
+            {initialData ? 'Update your trip parameters below' : 'Plan your next adventure with friends'}
+          </p>
+        </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-400 text-sm">
-            {error}
+          <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-3 text-red-600 text-sm">
+            <span>{error}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-[13px] font-semibold text-wandor-muted mb-2 uppercase tracking-wider">
               Trip Title *
             </label>
             <input
@@ -119,13 +121,13 @@ export default function TripFormModal({ isOpen, onClose, onSubmit, initialData }
               value={formData.name}
               onChange={handleChange}
               placeholder="e.g. Summer in Tokyo & Kyoto"
-              className="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors text-sm"
+              className="w-full h-14 bg-black/5 border border-transparent rounded-2xl px-4 text-black placeholder-black/40 text-[15px] focus:outline-none focus:bg-white focus:border-black/20 focus:ring-4 focus:ring-black/5 transition-all"
               required
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-[13px] font-semibold text-wandor-muted mb-2 uppercase tracking-wider">
               Destination *
             </label>
             <input
@@ -134,14 +136,14 @@ export default function TripFormModal({ isOpen, onClose, onSubmit, initialData }
               value={formData.destination}
               onChange={handleChange}
               placeholder="e.g. Tokyo, Japan"
-              className="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors text-sm"
+              className="w-full h-14 bg-black/5 border border-transparent rounded-2xl px-4 text-black placeholder-black/40 text-[15px] focus:outline-none focus:bg-white focus:border-black/20 focus:ring-4 focus:ring-black/5 transition-all"
               required
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-[13px] font-semibold text-wandor-muted mb-2 uppercase tracking-wider">
                 Start Date *
               </label>
               <input
@@ -149,13 +151,13 @@ export default function TripFormModal({ isOpen, onClose, onSubmit, initialData }
                 name="startDate"
                 value={formData.startDate}
                 onChange={handleChange}
-                className="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors text-sm"
+                className="w-full h-14 bg-black/5 border border-transparent rounded-2xl px-4 text-black placeholder-black/40 text-[15px] focus:outline-none focus:bg-white focus:border-black/20 focus:ring-4 focus:ring-black/5 transition-all"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-[13px] font-semibold text-wandor-muted mb-2 uppercase tracking-wider">
                 End Date *
               </label>
               <input
@@ -163,15 +165,15 @@ export default function TripFormModal({ isOpen, onClose, onSubmit, initialData }
                 name="endDate"
                 value={formData.endDate}
                 onChange={handleChange}
-                className="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors text-sm"
+                className="w-full h-14 bg-black/5 border border-transparent rounded-2xl px-4 text-black placeholder-black/40 text-[15px] focus:outline-none focus:bg-white focus:border-black/20 focus:ring-4 focus:ring-black/5 transition-all"
                 required
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-[13px] font-semibold text-wandor-muted mb-2 uppercase tracking-wider">
                 Budget (USD) *
               </label>
               <input
@@ -181,13 +183,13 @@ export default function TripFormModal({ isOpen, onClose, onSubmit, initialData }
                 onChange={handleChange}
                 placeholder="3000"
                 min="0"
-                className="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors text-sm"
+                className="w-full h-14 bg-black/5 border border-transparent rounded-2xl px-4 text-black placeholder-black/40 text-[15px] focus:outline-none focus:bg-white focus:border-black/20 focus:ring-4 focus:ring-black/5 transition-all"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-[13px] font-semibold text-wandor-muted mb-2 uppercase tracking-wider">
                 Travelers *
               </label>
               <input
@@ -196,45 +198,45 @@ export default function TripFormModal({ isOpen, onClose, onSubmit, initialData }
                 value={formData.travelers}
                 onChange={handleChange}
                 min="1"
-                className="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors text-sm"
+                className="w-full h-14 bg-black/5 border border-transparent rounded-2xl px-4 text-black placeholder-black/40 text-[15px] focus:outline-none focus:bg-white focus:border-black/20 focus:ring-4 focus:ring-black/5 transition-all"
                 required
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-[13px] font-semibold text-wandor-muted mb-2 uppercase tracking-wider">
               Interests & Activities
             </label>
-            <div className="flex gap-2 mb-2">
+            <div className="flex gap-2 mb-3">
               <input
                 type="text"
                 value={interestInput}
                 onChange={(e) => setInterestInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddInterest())}
                 placeholder="e.g. Hiking, Food, Museums"
-                className="flex-1 bg-slate-900/80 border border-slate-700/80 rounded-xl px-4 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 text-sm"
+                className="flex-1 h-14 bg-black/5 border border-transparent rounded-2xl px-4 text-black placeholder-black/40 text-[15px] focus:outline-none focus:bg-white focus:border-black/20 focus:ring-4 focus:ring-black/5 transition-all"
               />
               <button
                 type="button"
                 onClick={handleAddInterest}
-                className="bg-slate-800 hover:bg-slate-700 text-indigo-400 px-3 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-1"
+                className="bg-black/5 hover:bg-black/10 text-black px-5 rounded-2xl text-[14px] font-medium transition-colors flex items-center gap-1"
               >
                 <Plus className="w-4 h-4" /> Add
               </button>
             </div>
 
-            <div className="flex flex-wrap gap-1.5 min-h-[32px]">
+            <div className="flex flex-wrap gap-2 min-h-[32px]">
               {formData.interests.map((interest, idx) => (
                 <span
                   key={idx}
-                  className="bg-indigo-950/80 border border-indigo-700/50 text-indigo-300 text-xs px-2.5 py-1 rounded-lg flex items-center gap-1.5"
+                  className="bg-black/5 text-wandor-muted text-[13px] px-3 py-1.5 rounded-full flex items-center gap-2 font-medium"
                 >
                   {interest}
                   <button
                     type="button"
                     onClick={() => handleRemoveInterest(idx)}
-                    className="hover:text-rose-400 text-slate-400 transition-colors"
+                    className="hover:text-red-500 text-black/40 transition-colors"
                   >
                     <Trash2 className="w-3 h-3" />
                   </button>
@@ -243,17 +245,17 @@ export default function TripFormModal({ isOpen, onClose, onSubmit, initialData }
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-slate-800">
+          <div className="flex justify-end gap-3 pt-6 border-t border-black/5 mt-8">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="px-6 py-3.5 rounded-full text-[14px] font-medium text-wandor-muted hover:text-black hover:bg-black/5 transition-colors uppercase tracking-[0.04em]"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-500 shadow-lg shadow-indigo-600/30 transition-all"
+              className="px-8 py-3.5 rounded-full text-[14px] font-medium text-white bg-wandor-prompt hover:bg-[#7a4827] shadow-lg shadow-wandor-prompt/20 transition-all active:scale-95 uppercase tracking-[0.04em]"
             >
               {initialData ? 'Save Changes' : 'Create Trip'}
             </button>

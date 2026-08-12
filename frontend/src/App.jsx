@@ -199,7 +199,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen flex flex-col font-sans text-wandor-text">
       {/* Toast Notification */}
       {toast && (
         <div
@@ -223,126 +223,120 @@ export default function App() {
       ) : (
         <>
           {/* Navigation Header */}
-          <header className="glass-panel sticky top-0 z-40 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="bg-indigo-600/20 p-2.5 rounded-2xl border border-indigo-500/30 text-indigo-400">
-              <Compass className="w-7 h-7" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-extrabold tracking-tight text-white">
-                  Trip<span className="text-indigo-400">Sync</span>
-                </h1>
-                <span className="text-[10px] font-bold tracking-widest uppercase bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full border border-indigo-500/30">
-                  AI Ready
-                </span>
+          <header className="pt-6 px-4 sm:px-6 lg:px-8 sticky top-0 z-40">
+            <div className="max-w-[1360px] mx-auto h-16 flex items-center justify-between px-6 bg-white/70 backdrop-blur-xl border border-black/5 rounded-full shadow-sm">
+              <div className="flex items-center gap-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h1 className="text-[28px] font-display font-medium text-black tracking-tight leading-none">
+                      TripSync
+                    </h1>
+                  </div>
+                </div>
               </div>
-              <p className="text-xs text-slate-400">Collaborative Travel Planner</p>
-            </div>
-          </div>
 
-          <div className="flex items-center gap-3">
-            {user ? (
-              <>
-                <div className="hidden sm:flex items-center gap-2.5 bg-slate-900/80 px-3.5 py-1.5 rounded-xl border border-slate-800">
-                  <div className="w-7 h-7 rounded-lg bg-indigo-600/30 text-indigo-300 border border-indigo-500/40 flex items-center justify-center font-bold text-xs">
+              {/* Center Links (Hidden on Mobile) */}
+              <div className="absolute left-1/2 -translate-x-1/2 hidden md:flex gap-8">
+                <button className="bg-transparent border-none cursor-pointer text-[14px] font-medium uppercase text-wandor-muted tracking-[0.04em] transition-opacity hover:text-black">
+                  Discover
+                </button>
+                <button className="bg-transparent border-none cursor-pointer text-[14px] font-medium uppercase text-wandor-muted tracking-[0.04em] transition-opacity hover:text-black">
+                  My Trips
+                </button>
+                <button className="bg-transparent border-none cursor-pointer text-[14px] font-medium uppercase text-wandor-muted tracking-[0.04em] transition-opacity hover:text-black">
+                  Expenses
+                </button>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-full border border-black/5 bg-black/5">
+                  <div className="w-6 h-6 rounded-full bg-wandor-prompt text-white flex items-center justify-center font-bold text-xs">
                     {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                   </div>
-                  <div className="text-left">
-                    <p className="text-xs font-semibold text-white leading-tight">{user.name}</p>
-                    <p className="text-[10px] text-slate-400 leading-tight">{user.email}</p>
-                  </div>
+                  <p className="text-xs font-semibold text-black leading-tight pr-2">{user.name}</p>
                 </div>
 
                 <button
                   onClick={fetchTrips}
-                  className="p-2.5 text-slate-400 hover:text-white bg-slate-900/60 hover:bg-slate-800 border border-slate-800 rounded-xl transition-colors"
+                  className="p-2 text-wandor-muted hover:text-black transition-colors"
                   title="Refresh Trips from API"
                 >
                   <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                 </button>
 
                 <button
-                  onClick={handleOpenCreateModal}
-                  className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-lg shadow-indigo-600/25 transition-all"
-                >
-                  <Plus className="w-4 h-4" /> Create Trip
-                </button>
-
-                <button
                   onClick={handleLogout}
-                  className="p-2.5 text-slate-400 hover:text-rose-400 bg-slate-900/60 hover:bg-rose-950/30 border border-slate-800 hover:border-rose-900 rounded-xl transition-colors"
+                  className="p-2 text-wandor-muted hover:text-rose-500 transition-colors"
                   title="Log Out"
                 >
                   <LogOut className="w-4 h-4" />
                 </button>
-              </>
-            ) : (
-              <button
-                onClick={() => setIsAuthModalOpen(true)}
-                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-600/25 transition-all"
-              >
-                <LogIn className="w-4 h-4" /> Log In / Register
-              </button>
-            )}
-          </div>
-        </div>
-      </header>
+
+                <button
+                  onClick={handleOpenCreateModal}
+                  className="bg-black hover:bg-[#333] text-white font-medium text-[13px] uppercase tracking-[0.04em] px-4 py-2.5 rounded-full transition-all active:scale-95 flex items-center gap-1.5"
+                >
+                  <Plus className="w-4 h-4" /> Create Trip
+                </button>
+              </div>
+            </div>
+          </header>
 
       {/* Main Dashboard Content */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-[1360px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Authenticated Dashboard */}
         <>
+            <div className="mb-10 text-center md:text-left">
+              <h2 className="text-[32px] md:text-[40px] font-medium tracking-tight mb-2">Good morning, {user?.name?.split(' ')[0]}</h2>
+              <p className="text-xl text-wandor-muted">Ready to plan your next adventure?</p>
+            </div>
+
             {/* Stats Row */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              <div className="glass-card rounded-2xl p-5 flex items-center gap-4">
-                <div className="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl border border-indigo-500/20">
-                  <Globe className="w-6 h-6" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              <div className="bg-white rounded-[32px] p-6 flex flex-col justify-center border border-black/5 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.02)]">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2.5 bg-black/5 rounded-full text-black">
+                    <Globe className="w-5 h-5" />
+                  </div>
+                  <p className="text-sm text-wandor-muted font-medium uppercase tracking-widest">Total Trips</p>
                 </div>
-                <div>
-                  <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">Your Trips</p>
-                  <h3 className="text-2xl font-bold text-white">{trips.length}</h3>
-                </div>
+                <h3 className="text-[40px] font-semibold text-black leading-none">{trips.length}</h3>
               </div>
 
-              <div className="glass-card rounded-2xl p-5 flex items-center gap-4">
-                <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20">
-                  <DollarSign className="w-6 h-6" />
+              <div className="bg-white rounded-[32px] p-6 flex flex-col justify-center border border-black/5 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.02)]">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2.5 bg-black/5 rounded-full text-black">
+                    <DollarSign className="w-5 h-5" />
+                  </div>
+                  <p className="text-sm text-wandor-muted font-medium uppercase tracking-widest">Total Budget</p>
                 </div>
-                <div>
-                  <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">Total Planned Budget</p>
-                  <h3 className="text-2xl font-bold text-white">${totalBudget.toLocaleString()}</h3>
-                </div>
+                <h3 className="text-[40px] font-semibold text-black leading-none">${totalBudget.toLocaleString()}</h3>
               </div>
 
-              <div className="glass-card rounded-2xl p-5 flex items-center gap-4">
-                <div className="p-3 bg-violet-500/10 text-violet-400 rounded-xl border border-violet-500/20">
-                  <Users className="w-6 h-6" />
+              <div className="bg-white rounded-[32px] p-6 flex flex-col justify-center border border-black/5 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.02)]">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2.5 bg-black/5 rounded-full text-black">
+                    <Users className="w-5 h-5" />
+                  </div>
+                  <p className="text-sm text-wandor-muted font-medium uppercase tracking-widest">Total Travelers</p>
                 </div>
-                <div>
-                  <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">Total Travelers</p>
-                  <h3 className="text-2xl font-bold text-white">{totalTravelers}</h3>
-                </div>
+                <h3 className="text-[40px] font-semibold text-black leading-none">{totalTravelers}</h3>
               </div>
             </div>
 
             {/* Section Heading */}
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-xl font-bold text-white">Your Planned Trips</h2>
-                <p className="text-slate-400 text-sm">Protected REST API &bull; User ID Scoped</p>
-              </div>
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl font-semibold text-black tracking-tight">Your Upcoming Adventures</h2>
             </div>
 
             {/* Error Banner */}
             {error && (
-              <div className="mb-6 p-4 bg-rose-950/40 border border-rose-800/80 rounded-2xl flex items-center gap-3 text-rose-300">
+              <div className="mb-8 p-4 bg-red-50 text-red-600 rounded-2xl flex items-center gap-3">
                 <AlertCircle className="w-5 h-5 shrink-0" />
                 <div className="flex-1 text-sm">{error}</div>
                 <button
                   onClick={fetchTrips}
-                  className="text-xs underline font-semibold hover:text-white"
+                  className="text-xs font-semibold hover:underline"
                 >
                   Retry
                 </button>
@@ -351,38 +345,37 @@ export default function App() {
 
             {/* Loading Skeleton / State */}
             {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {[1, 2, 3].map((n) => (
-                  <div key={n} className="glass-card rounded-2xl p-6 h-64 animate-pulse flex flex-col justify-between">
-                    <div className="space-y-3">
-                      <div className="h-4 bg-slate-800 rounded w-1/3"></div>
-                      <div className="h-6 bg-slate-800 rounded w-2/3"></div>
-                      <div className="h-4 bg-slate-800 rounded w-1/2"></div>
+                  <div key={n} className="bg-white rounded-[32px] p-6 h-[320px] animate-pulse border border-black/5">
+                    <div className="space-y-4">
+                      <div className="h-6 bg-gray-100 rounded-full w-1/3"></div>
+                      <div className="h-8 bg-gray-100 rounded-full w-2/3"></div>
+                      <div className="h-4 bg-gray-100 rounded-full w-1/2"></div>
                     </div>
-                    <div className="h-10 bg-slate-800 rounded"></div>
                   </div>
                 ))}
               </div>
             ) : trips.length === 0 ? (
               /* Empty State */
-              <div className="glass-card rounded-3xl p-12 text-center max-w-md mx-auto my-12 border border-slate-800">
-                <div className="w-16 h-16 bg-indigo-500/10 text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-indigo-500/20">
-                  <Globe className="w-8 h-8" />
+              <div className="bg-white rounded-[40px] p-16 text-center max-w-2xl mx-auto my-12 border border-black/5 shadow-sm">
+                <div className="w-20 h-20 bg-black/5 text-black rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Globe className="w-10 h-10" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">No trips created yet</h3>
-                <p className="text-slate-400 text-sm mb-6">
-                  Get started by creating your first trip. Enter destination, dates, budget and interests.
+                <h3 className="text-3xl font-semibold text-black mb-4">No trips created yet</h3>
+                <p className="text-lg text-wandor-muted mb-8 max-w-md mx-auto">
+                  Get started by creating your first adventure. Tell our AI where you want to go.
                 </p>
                 <button
                   onClick={handleOpenCreateModal}
-                  className="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-6 py-3 rounded-xl shadow-lg shadow-indigo-600/30 transition-all"
+                  className="bg-black hover:bg-[#333] text-white font-medium text-[15px] uppercase tracking-[0.04em] px-8 py-4 rounded-full transition-all active:scale-95 shadow-lg shadow-black/10"
                 >
-                  + Create First Trip
+                  Plan My Trip
                 </button>
               </div>
             ) : (
               /* Trip Cards Grid */
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {trips.map((trip) => (
                   <TripCard
                     key={trip._id}

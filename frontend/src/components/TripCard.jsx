@@ -12,29 +12,29 @@ export default function TripCard({ trip, onEdit, onDelete, onManageExpenses, onV
   };
 
   return (
-    <div className="glass-card rounded-2xl p-6 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-xl hover:shadow-indigo-500/10 flex flex-col justify-between group">
+    <div className="bg-white rounded-[32px] p-6 transition-all duration-300 border border-black/5 hover:border-black/10 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] flex flex-col justify-between group">
       <div>
-        <div className="flex items-start justify-between mb-3">
+        <div className="flex items-start justify-between mb-4">
           <div>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-black/5 text-wandor-muted mb-3">
               <MapPin className="w-3.5 h-3.5" />
               {trip.destination}
             </span>
-            <h3 className="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors">
+            <h3 className="text-[24px] leading-tight font-semibold text-black group-hover:text-wandor-prompt transition-colors">
               {trip.name}
             </h3>
           </div>
-          <div className="flex items-center gap-1 bg-slate-900/60 p-1 rounded-lg border border-slate-800">
+          <div className="flex items-center gap-1 bg-black/5 p-1 rounded-full border border-black/5">
             <button
               onClick={() => onEdit(trip)}
-              className="p-1.5 text-slate-400 hover:text-indigo-400 hover:bg-slate-800 rounded-md transition-colors"
+              className="p-2 text-wandor-muted hover:text-black hover:bg-white rounded-full transition-all shadow-sm"
               title="Edit Trip"
             >
               <Edit3 className="w-4 h-4" />
             </button>
             <button
               onClick={() => onDelete(trip._id)}
-              className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-md transition-colors"
+              className="p-2 text-wandor-muted hover:text-rose-500 hover:bg-white rounded-full transition-all shadow-sm"
               title="Delete Trip"
             >
               <Trash2 className="w-4 h-4" />
@@ -42,36 +42,36 @@ export default function TripCard({ trip, onEdit, onDelete, onManageExpenses, onV
           </div>
         </div>
 
-        <div className="space-y-2 py-3 border-y border-slate-800/80 my-4 text-sm text-slate-300">
+        <div className="space-y-3 py-4 border-y border-black/5 my-4 text-sm text-wandor-text">
           <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-indigo-400 shrink-0" />
-            <span>
+            <Calendar className="w-4 h-4 text-wandor-muted shrink-0" />
+            <span className="font-medium">
               {formatDate(trip.startDate)} — {formatDate(trip.endDate)}
             </span>
           </div>
 
           <div className="flex items-center justify-between pt-1">
             <div className="flex items-center gap-2">
-              <DollarSign className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span className="font-semibold text-emerald-400">
+              <DollarSign className="w-4 h-4 text-wandor-prompt shrink-0" />
+              <span className="font-semibold text-black">
                 ${trip.budget?.toLocaleString()}
               </span>
             </div>
-            <div className="flex items-center gap-1.5 text-slate-400 text-xs bg-slate-800/50 px-2.5 py-1 rounded-md">
-              <Users className="w-3.5 h-3.5 text-indigo-400" />
+            <div className="flex items-center gap-1.5 text-wandor-muted text-xs bg-black/5 px-3 py-1.5 rounded-full font-medium">
+              <Users className="w-3.5 h-3.5" />
               <span>{trip.travelers} {trip.travelers === 1 ? 'Traveler' : 'Travelers'}</span>
             </div>
           </div>
         </div>
 
         {trip.interests && trip.interests.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mt-3">
+          <div className="flex flex-wrap gap-2 mt-4">
             {trip.interests.map((interest, index) => (
               <span
                 key={index}
-                className="inline-flex items-center gap-1 text-xs px-2.5 py-0.5 rounded-md bg-slate-800/80 text-slate-300 border border-slate-700/50"
+                className="inline-flex items-center gap-1 text-xs px-3 py-1 rounded-full bg-black/5 text-wandor-muted font-medium"
               >
-                <Tag className="w-3 h-3 text-slate-400" />
+                <Tag className="w-3 h-3 text-black/40" />
                 {interest}
               </span>
             ))}
@@ -79,19 +79,19 @@ export default function TripCard({ trip, onEdit, onDelete, onManageExpenses, onV
         )}
       </div>
 
-      <div className="mt-5 pt-3 border-t border-slate-800/50 flex justify-between items-center gap-2 text-xs text-slate-500">
-        <span className="shrink-0">Created {formatDate(trip.createdAt)}</span>
-        <div className="flex items-center gap-1.5">
+      <div className="mt-6 pt-4 border-t border-black/5 flex justify-between items-center gap-2 text-xs text-wandor-muted">
+        <span className="shrink-0 font-medium">Created {formatDate(trip.createdAt)}</span>
+        <div className="flex items-center gap-2">
           <button
             onClick={() => onViewItinerary(trip)}
-            className="flex items-center gap-1.5 text-indigo-400 font-semibold hover:text-white bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 px-2.5 py-1 rounded-lg transition-all text-xs"
+            className="flex items-center gap-1.5 text-wandor-prompt font-semibold hover:text-white bg-wandor-prompt/10 hover:bg-wandor-prompt px-3 py-2 rounded-full transition-all text-xs"
             title="AI Itinerary"
           >
             <Sparkles className="w-3.5 h-3.5" /> Itinerary
           </button>
           <button
             onClick={() => onManageExpenses(trip)}
-            className="flex items-center gap-1.5 text-slate-400 font-semibold hover:text-white bg-slate-800/60 hover:bg-slate-700 border border-slate-700/50 px-2.5 py-1 rounded-lg transition-all text-xs"
+            className="flex items-center gap-1.5 text-black font-semibold hover:bg-black/10 bg-black/5 px-3 py-2 rounded-full transition-all text-xs"
             title="Manage Expenses"
           >
             <Receipt className="w-3.5 h-3.5" /> Expenses

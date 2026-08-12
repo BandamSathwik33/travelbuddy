@@ -29,59 +29,59 @@ function DayCard({ dayData, colorTheme, defaultOpen }) {
   const { day, date, title, activities = [], meals = {}, accommodation, estimatedDayBudget } = dayData;
 
   return (
-    <div className={`bg-slate-950/50 border ${colorTheme.ring} rounded-2xl overflow-hidden transition-all`}>
+    <div className={`bg-white border ${colorTheme.ring} rounded-2xl overflow-hidden transition-all shadow-[0_2px_12px_-4px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-black/10`}>
       {/* Day Header — always visible */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center gap-4 p-4 text-left hover:bg-slate-800/30 transition-colors"
+        className="w-full flex items-center gap-4 p-5 text-left hover:bg-black/[0.02] transition-colors"
       >
-        <div className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm border ${colorTheme.badge}`}>
+        <div className={`shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-sm border ${colorTheme.badge}`}>
           D{day}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-bold text-white truncate">{title || `Day ${day}`}</p>
-          <p className="text-xs text-slate-500 mt-0.5">{date}</p>
+          <p className="text-[16px] font-semibold text-black truncate">{title || `Day ${day}`}</p>
+          <p className="text-[13px] text-wandor-muted mt-0.5">{date}</p>
         </div>
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-4 shrink-0">
           {estimatedDayBudget > 0 && (
-            <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-lg">
+            <span className="text-[12px] font-semibold text-emerald-600 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">
               ~${estimatedDayBudget}
             </span>
           )}
-          {open ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+          {open ? <ChevronUp className="w-5 h-5 text-black/40" /> : <ChevronDown className="w-5 h-5 text-black/40" />}
         </div>
       </button>
 
       {/* Day Body — collapsible */}
       {open && (
-        <div className="px-4 pb-5 space-y-5 border-t border-slate-800/60">
+        <div className="px-5 pb-6 space-y-6 border-t border-black/5">
 
           {/* Activities */}
           {activities.length > 0 && (
-            <div className="pt-4">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3 flex items-center gap-1.5">
-                <Clock className="w-3 h-3" /> Activities
+            <div className="pt-5">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-wandor-muted mb-4 flex items-center gap-2">
+                <Clock className="w-3.5 h-3.5" /> Activities
               </p>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {activities.map((act, i) => (
-                  <div key={i} className="flex gap-3">
+                  <div key={i} className="flex gap-4">
                     <div className="flex flex-col items-center shrink-0">
-                      <div className={`w-2 h-2 rounded-full mt-1.5 ${colorTheme.dot}`} />
-                      {i < activities.length - 1 && <div className="w-px flex-1 bg-slate-800 mt-1" />}
+                      <div className={`w-2.5 h-2.5 rounded-full mt-1.5 ${colorTheme.dot}`} />
+                      {i < activities.length - 1 && <div className="w-px flex-1 bg-black/5 mt-1.5" />}
                     </div>
-                    <div className="flex-1 min-w-0 pb-2">
-                      <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0 pb-3">
+                      <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
                           {act.time && (
-                            <span className="text-[10px] font-semibold text-slate-500 mr-2">{act.time}</span>
+                            <span className="text-[12px] font-semibold text-wandor-muted mr-3">{act.time}</span>
                           )}
-                          <span className="text-sm font-semibold text-white">{act.activity}</span>
+                          <span className="text-[15px] font-medium text-black">{act.activity}</span>
                           {act.description && (
-                            <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">{act.description}</p>
+                            <p className="text-[13px] text-wandor-muted mt-1.5 leading-relaxed">{act.description}</p>
                           )}
                         </div>
                         {act.estimatedCost > 0 && (
-                          <span className="shrink-0 text-xs font-semibold text-slate-300 bg-slate-800/80 px-2 py-0.5 rounded-lg border border-slate-700/50">
+                          <span className="shrink-0 text-[12px] font-semibold text-black bg-black/5 px-2.5 py-1 rounded-full border border-black/5">
                             ${act.estimatedCost}
                           </span>
                         )}
@@ -95,35 +95,35 @@ function DayCard({ dayData, colorTheme, defaultOpen }) {
 
           {/* Meals */}
           {(meals.breakfast || meals.lunch || meals.dinner) && (
-            <div className="bg-slate-900/60 rounded-xl p-3.5 border border-slate-800/60">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3 flex items-center gap-1.5">
-                <Utensils className="w-3 h-3" /> Meals
+            <div className="bg-black/[0.02] rounded-2xl p-4 border border-black/5">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-wandor-muted mb-4 flex items-center gap-2">
+                <Utensils className="w-3.5 h-3.5" /> Meals
               </p>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {meals.breakfast && (
-                  <div className="flex items-start gap-2">
-                    <Coffee className="w-3.5 h-3.5 text-amber-400 mt-0.5 shrink-0" />
+                  <div className="flex items-start gap-3">
+                    <Coffee className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
                     <div>
-                      <span className="text-[10px] font-bold text-slate-500 uppercase">Breakfast </span>
-                      <span className="text-xs text-slate-300">{meals.breakfast}</span>
+                      <span className="text-[11px] font-semibold text-wandor-muted uppercase tracking-wider">Breakfast </span>
+                      <span className="text-[13px] text-black font-medium">{meals.breakfast}</span>
                     </div>
                   </div>
                 )}
                 {meals.lunch && (
-                  <div className="flex items-start gap-2">
-                    <Sun className="w-3.5 h-3.5 text-yellow-400 mt-0.5 shrink-0" />
+                  <div className="flex items-start gap-3">
+                    <Sun className="w-4 h-4 text-yellow-500 mt-0.5 shrink-0" />
                     <div>
-                      <span className="text-[10px] font-bold text-slate-500 uppercase">Lunch </span>
-                      <span className="text-xs text-slate-300">{meals.lunch}</span>
+                      <span className="text-[11px] font-semibold text-wandor-muted uppercase tracking-wider">Lunch </span>
+                      <span className="text-[13px] text-black font-medium">{meals.lunch}</span>
                     </div>
                   </div>
                 )}
                 {meals.dinner && (
-                  <div className="flex items-start gap-2">
-                    <Moon className="w-3.5 h-3.5 text-indigo-400 mt-0.5 shrink-0" />
+                  <div className="flex items-start gap-3">
+                    <Moon className="w-4 h-4 text-indigo-600 mt-0.5 shrink-0" />
                     <div>
-                      <span className="text-[10px] font-bold text-slate-500 uppercase">Dinner </span>
-                      <span className="text-xs text-slate-300">{meals.dinner}</span>
+                      <span className="text-[11px] font-semibold text-wandor-muted uppercase tracking-wider">Dinner </span>
+                      <span className="text-[13px] text-black font-medium">{meals.dinner}</span>
                     </div>
                   </div>
                 )}
@@ -133,11 +133,11 @@ function DayCard({ dayData, colorTheme, defaultOpen }) {
 
           {/* Accommodation */}
           {accommodation && (
-            <div className="flex items-start gap-2.5 bg-violet-950/20 border border-violet-500/20 rounded-xl p-3">
-              <Hotel className="w-4 h-4 text-violet-400 shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 bg-violet-50 border border-violet-100 rounded-2xl p-4">
+              <Hotel className="w-5 h-5 text-violet-600 shrink-0 mt-0.5" />
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-0.5">Stay</p>
-                <p className="text-xs text-slate-300">{accommodation}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-violet-600 mb-1">Stay</p>
+                <p className="text-[13px] font-medium text-black">{accommodation}</p>
               </div>
             </div>
           )}
@@ -195,51 +195,51 @@ export default function ItineraryModal({ isOpen, onClose, trip }) {
   const totalBudgetEstimate = itinerary?.days?.reduce((sum, d) => sum + (d.estimatedDayBudget || 0), 0) ?? 0;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-6xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="relative w-full max-w-[1400px] h-[92vh] bg-white border border-black/5 rounded-[40px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] flex flex-col overflow-hidden">
 
         {/* Header */}
-        <div className="flex items-start justify-between p-6 border-b border-slate-800 shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center shrink-0">
-              <Sparkles className="w-5 h-5 text-indigo-400" />
+        <div className="flex items-start justify-between p-8 border-b border-black/5 shrink-0">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-black/5 border border-black/5 flex items-center justify-center shrink-0">
+              <Sparkles className="w-6 h-6 text-wandor-prompt" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+              <h2 className="text-[24px] font-semibold text-black tracking-tight leading-tight flex items-center gap-3">
                 AI Itinerary
-                <span className="text-[10px] font-bold tracking-widest uppercase bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full border border-indigo-500/30">
+                <span className="text-[11px] font-bold tracking-widest uppercase bg-wandor-prompt/10 text-wandor-prompt px-2.5 py-1 rounded-full border border-wandor-prompt/20">
                   GPT-4o-mini
                 </span>
               </h2>
-              <p className="text-slate-400 text-xs mt-0.5">{trip.name} &bull; {trip.destination}</p>
+              <p className="text-wandor-muted text-[14px] mt-1">{trip.name} &bull; {trip.destination}</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-2 rounded-full hover:bg-slate-800 transition-colors ml-4 shrink-0"
+            className="text-wandor-muted hover:text-black p-3 rounded-full hover:bg-black/5 transition-colors ml-4 shrink-0"
           >
-            <X className="w-5 h-5" />
+            <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Trip Summary Strip */}
-        <div className="px-6 py-3 bg-slate-950/40 border-b border-slate-800/60 flex flex-wrap items-center gap-x-5 gap-y-1.5 shrink-0">
-          <span className="flex items-center gap-1.5 text-xs text-slate-400">
-            <MapPin className="w-3.5 h-3.5 text-indigo-400" />{trip.destination}
+        <div className="px-8 py-4 bg-black/[0.02] border-b border-black/5 flex flex-wrap items-center gap-x-6 gap-y-2 shrink-0">
+          <span className="flex items-center gap-2 text-[13px] font-medium text-black">
+            <MapPin className="w-4 h-4 text-wandor-muted" />{trip.destination}
           </span>
-          <span className="flex items-center gap-1.5 text-xs text-slate-400">
-            <Calendar className="w-3.5 h-3.5 text-indigo-400" />
+          <span className="flex items-center gap-2 text-[13px] font-medium text-black">
+            <Calendar className="w-4 h-4 text-wandor-muted" />
             {formatDate(trip.startDate)} — {formatDate(trip.endDate)}
           </span>
-          <span className="flex items-center gap-1.5 text-xs text-slate-400">
-            <DollarSign className="w-3.5 h-3.5 text-emerald-400" />${trip.budget?.toLocaleString()} budget
+          <span className="flex items-center gap-2 text-[13px] font-medium text-black">
+            <DollarSign className="w-4 h-4 text-wandor-prompt" />${trip.budget?.toLocaleString()} budget
           </span>
-          <span className="flex items-center gap-1.5 text-xs text-slate-400">
-            <Users className="w-3.5 h-3.5 text-indigo-400" />{trip.travelers} traveler{trip.travelers !== 1 ? 's' : ''}
+          <span className="flex items-center gap-2 text-[13px] font-medium text-black">
+            <Users className="w-4 h-4 text-wandor-muted" />{trip.travelers} traveler{trip.travelers !== 1 ? 's' : ''}
           </span>
           {trip.interests?.length > 0 && (
-            <span className="flex items-center gap-1.5 text-xs text-slate-400">
-              <Tag className="w-3.5 h-3.5 text-indigo-400" />{trip.interests.join(', ')}
+            <span className="flex items-center gap-2 text-[13px] font-medium text-black">
+              <Tag className="w-4 h-4 text-wandor-muted" />{trip.interests.join(', ')}
             </span>
           )}
         </div>
@@ -252,16 +252,16 @@ export default function ItineraryModal({ isOpen, onClose, trip }) {
 
           {/* Error Banner */}
           {error && (
-            <div className="m-5 p-4 bg-rose-950/40 border border-rose-800/80 rounded-2xl flex items-start gap-3 text-rose-300">
-              <AlertCircle className="w-5 h-5 shrink-0 text-rose-400 mt-0.5" />
+            <div className="m-6 p-5 bg-red-50 border border-red-100 rounded-3xl flex items-start gap-4 text-red-600 shadow-sm">
+              <AlertCircle className="w-6 h-6 shrink-0 mt-0.5" />
               <div className="flex-1">
-                <p className="text-sm font-semibold text-rose-300">Generation failed</p>
-                <p className="text-xs text-rose-400/80 mt-0.5">{error}</p>
+                <p className="text-[16px] font-semibold">Generation failed</p>
+                <p className="text-[14px] opacity-80 mt-1">{error}</p>
               </div>
               <button
                 onClick={handleGenerate}
                 disabled={generating}
-                className="shrink-0 text-xs font-semibold bg-rose-600 hover:bg-rose-500 text-white px-3 py-1.5 rounded-lg transition-colors"
+                className="shrink-0 text-[13px] font-medium bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-full transition-colors uppercase tracking-[0.04em]"
               >
                 Retry
               </button>
@@ -270,40 +270,40 @@ export default function ItineraryModal({ isOpen, onClose, trip }) {
 
           {/* Loading state (fetching saved itinerary) */}
           {loading && (
-            <div className="flex flex-col items-center justify-center py-16 text-slate-400">
-              <div className="w-10 h-10 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin mb-4" />
-              <p className="text-sm">Loading itinerary...</p>
+            <div className="flex flex-col items-center justify-center py-20 text-wandor-muted">
+              <div className="w-12 h-12 border-4 border-black/10 border-t-black rounded-full animate-spin mb-6" />
+              <p className="text-[15px] font-medium">Loading itinerary...</p>
             </div>
           )}
 
           {/* Generating state (calling OpenAI) */}
           {generating && (
-            <div className="flex flex-col items-center justify-center py-16">
-              <div className="relative w-16 h-16 mb-6">
-                <div className="absolute inset-0 border-4 border-indigo-500/20 rounded-full" />
-                <div className="absolute inset-0 border-4 border-t-indigo-500 rounded-full animate-spin" />
-                <Sparkles className="absolute inset-0 m-auto w-6 h-6 text-indigo-400 animate-pulse" />
+            <div className="flex flex-col items-center justify-center py-24">
+              <div className="relative w-20 h-20 mb-8">
+                <div className="absolute inset-0 border-[5px] border-black/5 rounded-full" />
+                <div className="absolute inset-0 border-[5px] border-t-black rounded-full animate-spin" />
+                <Sparkles className="absolute inset-0 m-auto w-8 h-8 text-black animate-pulse" />
               </div>
-              <p className="text-base font-semibold text-white mb-1">AI is crafting your itinerary…</p>
-              <p className="text-xs text-slate-500">This may take 10–30 seconds</p>
+              <p className="text-[20px] font-semibold text-black mb-2 tracking-tight">AI is crafting your itinerary...</p>
+              <p className="text-[15px] text-wandor-muted">This may take 10–30 seconds</p>
             </div>
           )}
 
           {/* Empty state — no itinerary yet */}
           {!loading && !generating && !itinerary && !error && (
-            <div className="flex flex-col items-center justify-center py-14 px-8 text-center">
-              <div className="w-16 h-16 bg-indigo-600/15 border border-indigo-500/30 rounded-3xl flex items-center justify-center mb-5">
-                <Sparkles className="w-8 h-8 text-indigo-400" />
+            <div className="flex flex-col items-center justify-center h-full py-14 px-8 text-center max-w-md mx-auto">
+              <div className="w-20 h-20 bg-black/5 rounded-full flex items-center justify-center mb-6">
+                <Sparkles className="w-10 h-10 text-black" />
               </div>
-              <h3 className="text-lg font-bold text-white mb-2">Generate Your AI Itinerary</h3>
-              <p className="text-sm text-slate-400 max-w-xs mb-6 leading-relaxed">
+              <h3 className="text-[24px] font-semibold text-black mb-3 tracking-tight">Generate Your AI Itinerary</h3>
+              <p className="text-[16px] text-wandor-muted mb-8 leading-relaxed">
                 Let GPT-4o-mini plan a personalized day-by-day itinerary based on your destination, dates, budget, and interests.
               </p>
               <button
                 onClick={handleGenerate}
-                className="flex items-center gap-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-6 py-3 rounded-2xl shadow-xl shadow-indigo-600/25 transition-all text-sm"
+                className="flex items-center justify-center gap-2.5 w-full bg-black hover:bg-[#333] text-white font-medium px-8 py-4 rounded-full shadow-lg shadow-black/10 transition-all text-[15px] uppercase tracking-[0.04em] active:scale-95"
               >
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-5 h-5" />
                 Generate AI Itinerary
               </button>
             </div>
@@ -311,17 +311,17 @@ export default function ItineraryModal({ isOpen, onClose, trip }) {
 
           {/* Itinerary view */}
           {!loading && !generating && itinerary && (
-            <div className="p-5 space-y-3">
+            <div className="p-8 space-y-4">
               {/* Meta strip */}
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center justify-between mb-4">
                 <div>
-                  <p className="text-sm font-bold text-white">
+                  <p className="text-[18px] font-semibold text-black tracking-tight">
                     {itinerary.days?.length}-Day Itinerary
                   </p>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <p className="text-[13px] text-wandor-muted mt-1 font-medium">
                     Generated {new Date(itinerary.generatedAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                     {totalBudgetEstimate > 0 && (
-                      <span className="ml-3 text-emerald-400 font-semibold">
+                      <span className="ml-4 text-emerald-600 font-semibold">
                         Est. total: ${totalBudgetEstimate.toLocaleString()}/person
                       </span>
                     )}
@@ -330,9 +330,9 @@ export default function ItineraryModal({ isOpen, onClose, trip }) {
                 <button
                   onClick={handleGenerate}
                   disabled={generating}
-                  className="flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 px-3 py-2 rounded-xl transition-all"
+                  className="flex items-center gap-2 text-[12px] font-medium text-black hover:bg-black/5 bg-transparent border border-black/10 px-4 py-2.5 rounded-full transition-all uppercase tracking-[0.04em]"
                 >
-                  <RefreshCw className="w-3.5 h-3.5" /> Regenerate
+                  <RefreshCw className="w-4 h-4" /> Regenerate
                 </button>
               </div>
 
@@ -351,7 +351,7 @@ export default function ItineraryModal({ isOpen, onClose, trip }) {
 
           {/* Map Pane (Right side) - Only visible when itinerary exists */}
           {!loading && !generating && itinerary && (
-            <div className="hidden md:block w-[45%] border-l border-slate-800 p-4 bg-slate-950/30 shrink-0 relative">
+            <div className="hidden md:block w-[45%] border-l border-black/5 bg-black/[0.02] shrink-0 relative">
               <ItineraryMap days={itinerary.days} />
             </div>
           )}
